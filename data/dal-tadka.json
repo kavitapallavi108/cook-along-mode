@@ -1,0 +1,211 @@
+{
+  "id": "dal-tadka",
+  "title": "Dal tadka",
+  "servings": 2,
+  "totalTime": "40 min",
+  "finalPhoto": "steps/10-final.jpg",
+  "ingredients": [
+    { "id": "toor-dal", "name": "Toor dal", "quantity": "1 cup" },
+    { "id": "water", "name": "Water", "quantity": "3 cups" },
+    { "id": "turmeric", "name": "Turmeric powder", "quantity": "½ tsp" },
+    { "id": "salt", "name": "Salt", "quantity": "1 tsp (½ + ½)" },
+    { "id": "ghee", "name": "Ghee", "quantity": "2 tbsp" },
+    { "id": "cumin", "name": "Cumin seeds", "quantity": "1 tsp" },
+    { "id": "hing", "name": "Hing", "quantity": "1 pinch" },
+    { "id": "garlic", "name": "Garlic", "quantity": "4 cloves, chopped" },
+    { "id": "onion", "name": "Onion", "quantity": "1 medium, chopped" },
+    { "id": "tomato", "name": "Tomato", "quantity": "1 medium, chopped" },
+    { "id": "green-chilli", "name": "Green chilli", "quantity": "1, slit" },
+    { "id": "red-chilli", "name": "Red chilli powder", "quantity": "½ tsp" },
+    { "id": "coriander", "name": "Coriander leaves", "quantity": "A handful, chopped" }
+  ],
+  "steps": [
+    {
+      "number": 1,
+      "short": "Rinse dal",
+      "photo": "steps/01-dal-rinsed.jpg",
+      "art": "rinsed",
+      "action": "Rinse toor dal",
+      "actionQuantity": "1 cup",
+      "details": "Rub the dal gently between your fingers under water, drain, and repeat.",
+      "cue": "Until the water runs clear (2–3 rinses)",
+      "cueType": "look",
+      "cueIcon": "water_drop",
+      "ingredients": [{ "id": "toor-dal", "quantity": "1 cup" }],
+      "process": [
+        { "art": "rinse1", "caption": "Measure 1 cup dal into a bowl" },
+        { "art": "rinse2", "caption": "Cover with water, rub gently" },
+        { "art": "rinse3", "caption": "Drain the cloudy water" },
+        { "art": "rinsed", "caption": "Repeat until it runs clear" }
+      ],
+      "timer": null,
+      "parallelHint": null
+    },
+    {
+      "number": 2,
+      "short": "Pressure cook",
+      "photo": "steps/02-cooker-whistles.jpg",
+      "art": "cooker",
+      "action": "Pressure cook the dal",
+      "actionQuantity": "3 cups water + ½ tsp turmeric + ½ tsp salt",
+      "details": "Put the rinsed dal, water, turmeric and salt in the cooker. Close the lid with the whistle on. After the 3rd whistle, turn off the flame. Don't open the lid yet.",
+      "cue": "Medium flame, 3 whistles",
+      "cueType": "whistle",
+      "ingredients": [
+        { "id": "water", "quantity": "3 cups" },
+        { "id": "turmeric", "quantity": "½ tsp" },
+        { "id": "salt", "quantity": "½ tsp" }
+      ],
+      "process": [
+        { "art": "cookerFill", "caption": "Add dal, water, turmeric and salt" },
+        { "art": "cookerLid", "caption": "Close the lid, whistle on" },
+        { "art": "cooker", "caption": "Count 3 whistles, then turn off" }
+      ],
+      "timer": null,
+      "parallelHint": "While the dal cooks, start the tadka (Step 3)."
+    },
+    {
+      "number": 3,
+      "short": "Heat ghee",
+      "photo": "steps/03-ghee-shimmers.jpg",
+      "art": "ghee",
+      "action": "Heat ghee in a pan",
+      "actionQuantity": "2 tbsp ghee",
+      "details": "Use a small pan or kadai. Keep the flame medium so the ghee doesn't smoke.",
+      "cue": "Medium flame, ~1 min, until the ghee shimmers",
+      "cueType": "time",
+      "ingredients": [{ "id": "ghee", "quantity": "2 tbsp" }],
+      "process": [
+        { "art": "kadaiEmpty", "caption": "Pan on medium flame" },
+        { "art": "gheeAdd", "caption": "Add 2 tbsp ghee" },
+        { "art": "ghee", "caption": "Ready when it shimmers" }
+      ],
+      "timer": { "name": "Heat ghee", "durationSec": 60 },
+      "parallelHint": null
+    },
+    {
+      "number": 4,
+      "short": "Cumin + hing",
+      "photo": "steps/04-cumin-crackles.jpg",
+      "art": "cumin",
+      "action": "Add cumin seeds and hing",
+      "actionQuantity": "1 tsp cumin + 1 pinch hing",
+      "details": "Add the hing as soon as the cumin starts to sizzle. Don't let the seeds turn black.",
+      "cue": "~30 sec, until the seeds crackle",
+      "cueType": "time",
+      "ingredients": [
+        { "id": "cumin", "quantity": "1 tsp" },
+        { "id": "hing", "quantity": "1 pinch" }
+      ],
+      "process": [
+        { "art": "cuminAdd", "caption": "Add 1 tsp cumin seeds" },
+        { "art": "cumin", "caption": "Wait till they crackle" },
+        { "art": "cuminHing", "caption": "Add a pinch of hing" }
+      ],
+      "timer": { "name": "Crackle cumin", "durationSec": 30 },
+      "parallelHint": null
+    },
+    {
+      "number": 5,
+      "short": "Onion + garlic",
+      "photo": "steps/05-onions-golden.jpg",
+      "art": "onions",
+      "action": "Sauté garlic and onion",
+      "actionQuantity": "4 garlic cloves + 1 onion",
+      "details": "Add the garlic first, then the onion. Stir every 30 seconds on medium flame so they brown evenly.",
+      "cue": "5–7 min, until golden brown",
+      "cueType": "time",
+      "ingredients": [
+        { "id": "garlic", "quantity": "4 cloves, chopped" },
+        { "id": "onion", "quantity": "1 medium, chopped" }
+      ],
+      "process": [
+        { "art": "garlicAdd", "caption": "Add the garlic first" },
+        { "art": "onionRaw", "caption": "Add onion, stir often" },
+        { "art": "onions", "caption": "Cook till golden brown" }
+      ],
+      "timer": { "name": "Sauté onions", "durationSec": 360 },
+      "parallelHint": null
+    },
+    {
+      "number": 6,
+      "short": "Tomato masala",
+      "photo": "steps/06-tomato-oil-separates.jpg",
+      "art": "tomato",
+      "action": "Add tomato and spices",
+      "actionQuantity": "1 tomato + 1 green chilli + ½ tsp chilli powder + ½ tsp salt",
+      "details": "Stir well and press the tomato with the back of the spoon as it softens.",
+      "cue": "4–5 min, until soft and oil separates",
+      "cueType": "time",
+      "ingredients": [
+        { "id": "tomato", "quantity": "1 medium, chopped" },
+        { "id": "green-chilli", "quantity": "1, slit" },
+        { "id": "red-chilli", "quantity": "½ tsp" },
+        { "id": "salt", "quantity": "½ tsp" }
+      ],
+      "process": [
+        { "art": "tomatoRaw", "caption": "Add the chopped tomato" },
+        { "art": "tomatoSpice", "caption": "Add chilli, powder and salt" },
+        { "art": "tomato", "caption": "Cook till oil separates" }
+      ],
+      "timer": { "name": "Cook tomato", "durationSec": 300 },
+      "parallelHint": null
+    },
+    {
+      "number": 7,
+      "short": "Mash dal",
+      "photo": "steps/07-dal-mashed.jpg",
+      "art": "mashed",
+      "action": "Open the cooker and mash the dal",
+      "actionQuantity": null,
+      "details": "Let the pressure drop on its own. Don't lift the whistle. Open the lid only when it turns easily, then mash the dal with a ladle until smooth.",
+      "cue": "Wait until pressure drops (~10 min)",
+      "cueType": "time",
+      "ingredients": [],
+      "process": [
+        { "art": "cookerLid", "caption": "Let the pressure drop" },
+        { "art": "dalCooked", "caption": "Open when the lid turns easily" },
+        { "art": "mashed", "caption": "Mash the dal smooth" }
+      ],
+      "timer": { "name": "Pressure release", "durationSec": 600 },
+      "parallelHint": null
+    },
+    {
+      "number": 8,
+      "short": "Simmer",
+      "photo": "steps/08-simmer.jpg",
+      "art": "simmer",
+      "action": "Pour the tadka into the dal and simmer",
+      "actionQuantity": "All of the tadka",
+      "details": "Stir well. Keep the flame low so it bubbles gently, not hard. Add a splash of hot water if it's too thick.",
+      "cue": "3–4 min, gentle bubbles",
+      "cueType": "time",
+      "ingredients": [],
+      "process": [
+        { "art": "tadkaPour", "caption": "Pour the tadka into the dal" },
+        { "art": "stirred", "caption": "Stir it in well" },
+        { "art": "simmer", "caption": "Simmer, gentle bubbles" }
+      ],
+      "timer": { "name": "Simmer dal", "durationSec": 240 },
+      "parallelHint": null
+    },
+    {
+      "number": 9,
+      "short": "Garnish",
+      "photo": "steps/09-garnished.jpg",
+      "art": "garnish",
+      "action": "Garnish and serve",
+      "actionQuantity": "A handful of coriander",
+      "details": "Sprinkle the chopped coriander on top. Serve hot with rice or roti.",
+      "cue": null,
+      "cueType": null,
+      "ingredients": [{ "id": "coriander", "quantity": "A handful, chopped" }],
+      "process": [
+        { "art": "bowlPlain", "caption": "Pour the dal into a bowl" },
+        { "art": "garnish", "caption": "Top with coriander, serve" }
+      ],
+      "timer": null,
+      "parallelHint": null
+    }
+  ]
+}

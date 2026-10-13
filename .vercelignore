@@ -1,0 +1,7 @@
+# Local-only files: not needed on the hosted prototype
+.claude
+serve.ps1
+start.cmd
+build.ps1
+cook-along-mode.html
+*.txt
