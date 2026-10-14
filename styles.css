@@ -51,7 +51,7 @@
   --target-gap: 64px;
   --target-radius: 23.8px;
   --bottombar-h: calc(var(--target-h) + 32px);
-  --photo-w: 360px;
+  --photo-w: 440px;   /* "Done looks like this" photo */
   --col-gap: 48px;
   --qty-color: #8A5A00;   /* warm brown for quantities (not the action colour) */
   --card-shadow: 0 1px 2px rgba(60, 40, 10, 0.06), 0 4px 16px rgba(60, 40, 10, 0.06);
@@ -305,7 +305,7 @@ md-filled-tonal-button.target {
 /* ---------- Step stage ---------- */
 /* Step 1 only: picture sequence of the process, down the right side */
 /* Step 1 only: picture sequence sits between the photo and the instruction text */
-.step.has-process { grid-template-columns: var(--photo-w) 150px minmax(0, 1fr); column-gap: 32px; }
+.step.has-process { grid-template-columns: var(--photo-w) 132px minmax(0, 1fr); column-gap: 28px; }
 .step.has-process .photo { grid-column: 1; grid-row: 1; }
 .step.has-process .process { grid-column: 2; grid-row: 1; }
 .step.has-process .step-text { grid-column: 3; grid-row: 1; }
@@ -615,7 +615,8 @@ md-filled-tonal-button.target {
 .ing-item .st { font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .ing-item .st md-icon { font-size: 18px; width: 18px; height: 18px; }
 .ing-item .q { font-size: 20px; font-weight: 800; text-align: right; white-space: nowrap; line-height: 1.2; }
-.panel-card.now .ing-item { background: rgba(255, 255, 255, 0.55); }
+.ing-item.now { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+.panel-groups > .panel-list { padding: 6px; border-radius: 18px; background: var(--md-sys-color-surface-container-lowest); }
 :root[data-theme="dark"] .panel-card.now .ing-item { background: rgba(0, 0, 0, 0.2); }
 .panel-used { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 2px 4px; font-size: 14px; font-weight: 600; }
 .panel-used md-icon { font-size: 20px; width: 20px; height: 20px; }

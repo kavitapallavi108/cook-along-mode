@@ -478,14 +478,11 @@ function renderPanel() {
       <span class="tx"><span class="nm">${esc(it.ing.name)}</span>${st ? `<span class="st">${st}</span>` : ''}</span>
       <span class="q">${esc(qty.trim())}</span></li>`;
   };
-  const card = (cls, icon, title, items, status) => items.length ? `
-    <div class="panel-card ${cls}">
-      <h3 class="group-title"><md-icon>${icon}</md-icon>${title}<span class="count">${items.length}</span></h3>
-      <ul class="panel-list">${items.map((it) => row(it, status)).join('')}</ul>
-    </div>` : '';
-  $('panelIngredients').innerHTML =
-    card('now', 'radio_button_checked', `Now · Step ${cur}`, groups.now, () => '')
-    + card('next', 'schedule', 'Coming up', groups.next, (it) => `Step ${it.step}`)
+  // One continuous list: this step's items first (highlighted), then everything still to come.
+  const rowsNow = groups.now.map((it) => row(it, () => `Now · Step ${it.step}`).replace('class="ing-item"', 'class="ing-item now"'));
+  const rowsNext = groups.next.map((it) => row(it, () => `Step ${it.step}`));
+  $('panelIngredients').innerHTML = ((rowsNow.length || rowsNext.length)
+    ? `<ul class="panel-list">${rowsNow.join('')}${rowsNext.join('')}</ul>` : '')
     // Used items are done with, so they collapse to one compact line of tags.
     + (groups.used.length ? `<div class="panel-used"><md-icon>check_circle</md-icon><span class="lbl">Used</span>${
       groups.used.map((it) => `<span class="used-tag">${esc(it.ing.name)}</span>`).join('')}</div>` : '');
