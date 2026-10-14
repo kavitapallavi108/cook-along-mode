@@ -210,7 +210,19 @@ md-filled-tonal-button.target {
   transition: background-color 200ms var(--ease-standard);
 }
 #app[data-screen="intro"] .voice-pill, #app[data-screen="done"] .voice-pill { width: 460px; }
-#app[data-screen="prep"] .voice-pill { width: 380px; }
+#app[data-screen="prep"] .voice-pill, #app[data-screen="recipes"] .voice-pill { width: 380px; }
+/* Voice-over control, top right: same height, width and corner as the voice bar beside it */
+.vo-btn {
+  --md-filled-tonal-button-container-height: 64px;
+  --md-filled-tonal-button-container-shape: 27.2px;
+  --md-filled-tonal-button-container-color: var(--md-sys-color-secondary-container);
+  --md-filled-tonal-button-label-text-color: var(--md-sys-color-on-secondary-container);
+  flex: 0 0 auto; height: 64px; width: 380px; margin-left: auto;
+}
+#app[data-screen="intro"] .vo-btn { width: 460px; }
+#app:not([data-screen="recipes"]):not([data-screen="intro"]) .vo-btn { display: none; }
+.vo-btn .btn-stack { font-size: 21px; font-weight: 600; gap: 10px; }
+.vo-btn .btn-stack md-icon { font-size: 30px; width: 30px; height: 30px; }
 .status-pill { height: 48px; font-size: 17px; padding: 0 16px 0 12px; gap: 8px; }
 .status-pill md-icon { font-size: 26px; width: 26px; height: 26px; }
 .mic-wrap {
@@ -221,12 +233,12 @@ md-filled-tonal-button.target {
 .mic-wrap md-icon { font-size: 30px; width: 30px; height: 30px; }
 /* "Say Zara + command": soft turmeric gradient; deeper while listening */
 .voice-pill[data-state="idle"] {
-  background: linear-gradient(90deg, #FFF3D6 0%, #FFE3A6 55%, #FFD27A 100%);
+  background: linear-gradient(90deg, #FFD27A 0%, #FFE3A6 45%, #FFF3D6 100%);
   color: #3A2600;
 }
 .voice-pill[data-state="idle"] .mic-wrap { background: rgba(255, 255, 255, 0.7); }
 .voice-pill[data-state="listening"] {
-  background: linear-gradient(90deg, #FFD98C 0%, #F7B93A 60%, #F0A30A 100%);
+  background: linear-gradient(90deg, #F0A30A 0%, #F7B93A 40%, #FFD98C 100%);
   color: var(--md-sys-color-on-primary);
 }
 .voice-pill[data-state="listening"] .mic-wrap { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
@@ -470,7 +482,10 @@ md-filled-tonal-button.target {
 }
 .recipe-card:active { transform: scale(0.98); }
 .recipe-card .thumb { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
-.recipe-card .thumb svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.recipe-card .thumb svg, .recipe-card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.recipe-card .thumb img { object-fit: cover; display: block; }
+/* the one recipe built in this prototype: a light turmeric outline shows where to start */
+.recipe-card.ready { box-shadow: 0 0 0 2px rgba(233, 168, 37, 0.75), var(--card-shadow); }
 .recipe-card .body { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px 16px; }
 .recipe-card .name { font-size: 22px; font-weight: 800; line-height: 1.15; }
 .recipe-card .meta { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 16px; font-weight: 600; }
@@ -564,7 +579,8 @@ md-filled-tonal-button.target {
   font-family: var(--md-ref-typeface-plain); color: var(--md-sys-color-on-surface);
 }
 .seg .dot {
-  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  /* 52 pt, but never wider than its slot, so dots don't overlap when the top bar is tight */
+  display: grid; place-items: center; width: min(52px, calc(100% - 8px)); aspect-ratio: 1; height: auto; border-radius: 50%;
   background: var(--md-sys-color-surface-container-highest);
   font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
   transition: background-color 200ms var(--ease-standard), transform 200ms var(--ease-standard);
@@ -598,7 +614,11 @@ md-filled-tonal-button.target {
   padding: 20px 16px 16px;
   overflow-y: auto; overscroll-behavior: contain;
 }
-.panel-head { display: flex; align-items: baseline; gap: 12px; padding: 0 4px; }
+.panel-head {
+  display: flex; align-items: baseline; gap: 12px; padding: 20px 4px 12px;
+  position: sticky; top: -20px; z-index: 1; margin: -20px 0 -12px;   /* title stays put while the list scrolls */
+  background: var(--md-sys-color-surface-container-low);
+}
 .panel-title { font-size: 30px; font-weight: 600; letter-spacing: -0.01em; }
 .panel-sub { font-size: 17px; font-weight: 600; margin-top: 2px; }
 .panel-groups { display: flex; flex-direction: column; gap: 14px; }
@@ -624,7 +644,8 @@ md-filled-tonal-button.target {
 .ing-item .st { font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .ing-item .st md-icon { font-size: 18px; width: 18px; height: 18px; }
 .ing-item .q { font-size: 20px; font-weight: 800; text-align: right; white-space: nowrap; line-height: 1.2; }
-.ing-item.now { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+.ing-item.now, .ing-item.used { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+.ing-item.now { box-shadow: inset 4px 0 0 var(--md-sys-color-primary); }   /* this step's items: same highlight + edge mark */
 .panel-groups > .panel-list { padding: 6px; border-radius: 18px; background: var(--md-sys-color-surface-container-lowest); }
 :root[data-theme="dark"] .panel-card.now .ing-item { background: rgba(0, 0, 0, 0.2); }
 .panel-used { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 2px 4px; font-size: 14px; font-weight: 600; }
@@ -708,7 +729,7 @@ md-filled-tonal-button.target {
   display: grid; place-items: center;
   background: var(--md-sys-color-surface-container-lowest); box-shadow: var(--card-shadow);
 }
-.intro .split-body { justify-content: flex-start; }   /* kicker + title line up with the top of the image */
+.intro .split-body { justify-content: center; }   /* text sits in the vertical middle beside the illustration */
 .intro-kicker { line-height: 1; margin-top: 0; }
 .intro-art svg { width: 92%; height: 92%; }
 .intro-art img { width: 100%; height: 100%; object-fit: contain; display: block; }
@@ -757,3 +778,15 @@ md-dialog { --md-dialog-container-color: var(--md-sys-color-surface-container-lo
   .alarm-banner, .chip.alert { animation: none; }
   .alarm-icon::after, .voice-pill[data-state="listening"] .mic-wrap::after { animation-duration: 2s; }
 }
+
+/* Screenshot mode (?shot=...): show final states, no motion */
+[data-shot] *, [data-shot] *::before, [data-shot] *::after { animation: none !important; transition: none !important; }
+
+
+/* Far state (cook at the stove): buttons grow with the text so they stay readable from a distance */
+:root[data-distance="far"] .step-screen { --target-h: 168px; --bottombar-h: calc(168px + 32px); }
+:root[data-distance="far"] .step-bar .btn-stack { font-size: 31px; }
+:root[data-distance="far"] .step-bar .btn-stack md-icon { font-size: 48px; width: 48px; height: 48px; }
+:root[data-distance="far"] .step-bar .btn-stack.row { font-size: 42px; }
+:root[data-distance="far"] .step-bar .btn-stack.row md-icon { font-size: 54px; width: 54px; height: 54px; }
+:root[data-distance="far"] .step-bar .btn-sub { font-size: 18px; }

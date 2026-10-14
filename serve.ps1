@@ -32,7 +32,7 @@ try {
     $res = $ctx.Response
     try {
       $path = [Uri]::UnescapeDataString($ctx.Request.Url.AbsolutePath)
-      if ($path -eq '/') { $path = '/index.html' }
+      if ($path.EndsWith('/')) { $path += 'index.html' }   # /deck/ -> /deck/index.html
       $full = [IO.Path]::GetFullPath((Join-Path $root $path.TrimStart('/')))
       if (-not $full.StartsWith($rootWithSep, [StringComparison]::OrdinalIgnoreCase) -or -not (Test-Path -LiteralPath $full -PathType Leaf)) {
         $res.StatusCode = 404

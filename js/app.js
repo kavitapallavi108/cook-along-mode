@@ -108,8 +108,8 @@ function renderRecipes() {
     .map((c) => `<button class="cat${c === category ? ' active' : ''}" role="tab" aria-selected="${c === category}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');
   const list = catalog.recipes.filter((r) => category === 'All' || r.category === category);
   $('recipeGrid').innerHTML = list.map((r) => `
-    <button class="recipe-card" data-id="${esc(r.id)}" aria-label="${esc(r.title)}">
-      <div class="thumb">${artSvg(r.art, r.title)}</div>
+    <button class="recipe-card${r.available ? ' ready' : ''}" data-id="${esc(r.id)}" aria-label="${esc(r.title)}">
+      <div class="thumb">${r.photo ? `<img src="${esc(r.photo)}" alt="" loading="lazy">` : artSvg(r.art, r.title)}</div>
       <div class="body">
         <span class="name">${esc(r.title)}</span>
         <span class="meta"><span><md-icon>schedule</md-icon>${esc(r.time)}</span><span><md-icon>signal_cellular_alt</md-icon>${esc(r.level)}</span><span><md-icon>star</md-icon>${r.rating}</span></span>
@@ -455,37 +455,39 @@ function ingredientUses(id) {
     .map((s) => ({ step: s.number, quantity: s.ingredients.find((i) => i.id === id).quantity }));
 }
 
-// Every use of an ingredient is its own row, grouped by Now / Coming up / Used,
-// so a multi-use ingredient (salt) shows each quantity with its step.
+// Every use of an ingredient is its own row, in recipe order, so a multi-use
+// ingredient (salt) shows each quantity with its step. All rows stay visible;
+// everything used up to and including the current step is highlighted.
 function renderPanel() {
-  const cur = state.screen === 'step' ? current().number : null;
-  const groups = { now: [], next: [], used: [] };
+  const cur = state.screen === 'step' ? current().number : 0;
+  const rows = [];
   for (const s of recipe.steps) {
     for (const use of s.ingredients) {
       const ing = recipe.ingredients.find((i) => i.id === use.id);
-      const item = { ing, quantity: use.quantity, step: s.number };
-      if (s.number === cur) groups.now.push(item);
-      else if (state.completed.includes(s.number)) groups.used.push(item);
-      else groups.next.push(item);
+      // "4 cloves, chopped" → quantity "4 cloves" on the right, "chopped" under the name.
+      const [qty, ...rest] = use.quantity.split(',');
+      const note = rest.join(',').trim();
+      const kind = s.number === cur ? 'now' : s.number < cur ? 'used' : '';
+      const label = kind === 'now' ? `Now · Step ${s.number}` : kind === 'used' ? `Used · Step ${s.number}` : `Step ${s.number}`;
+      const st = [label, note].filter(Boolean).join(' · ');
+      rows.push(`<li class="ing-item${kind ? ` ${kind}` : ''}">${ingredientThumb(ing.id)}
+        <span class="tx"><span class="nm">${esc(ing.name)}</span><span class="st">${kind === 'used' ? '<md-icon>check</md-icon>' : ''}${esc(st)}</span></span>
+        <span class="q">${esc(qty.trim())}</span></li>`);
     }
   }
-  // "4 cloves, chopped" → quantity "4 cloves" on the right, "chopped" under the name.
-  const row = (it, status) => {
-    const [qty, ...rest] = it.quantity.split(',');
-    const note = rest.join(',').trim();
-    const st = [status(it), note].filter(Boolean).join(' · ');
-    return `<li class="ing-item">${ingredientThumb(it.ing.id)}
-      <span class="tx"><span class="nm">${esc(it.ing.name)}</span>${st ? `<span class="st">${st}</span>` : ''}</span>
-      <span class="q">${esc(qty.trim())}</span></li>`;
-  };
-  // One continuous list: this step's items first (highlighted), then everything still to come.
-  const rowsNow = groups.now.map((it) => row(it, () => `Now · Step ${it.step}`).replace('class="ing-item"', 'class="ing-item now"'));
-  const rowsNext = groups.next.map((it) => row(it, () => `Step ${it.step}`));
-  $('panelIngredients').innerHTML = ((rowsNow.length || rowsNext.length)
-    ? `<ul class="panel-list">${rowsNow.join('')}${rowsNext.join('')}</ul>` : '');
-  // Used items are not shown: the panel only lists what is still to be added.
+  $('panelIngredients').innerHTML = rows.length ? `<ul class="panel-list">${rows.join('')}</ul>` : '';
+  scrollPanelToNow();
   $('panelSub').textContent = `${recipe.title} · for ${recipe.servings} servings`;
   renderPanelTimers();
+}
+
+// Scroll so this step's items sit in the upper part of the list, with the last used ones above them.
+function scrollPanelToNow() {
+  const inner = $('panelIngredients').closest('.panel-inner');
+  const now = $('panelIngredients').querySelector('.ing-item.now');
+  if (!inner) return;
+  inner.scrollTop = 0;
+  if (now) inner.scrollTop = Math.max(0, now.getBoundingClientRect().top - inner.getBoundingClientRect().top - inner.clientHeight * 0.35);
 }
 
 function renderPanelTimers(now = Date.now()) {
@@ -538,6 +540,7 @@ function openPanel(section = 'ingredients') {
   renderPanel();
   const panel = $('panel');
   panel.classList.add('open');
+  requestAnimationFrame(scrollPanelToNow);   // measure once the panel is laid out
   $('stepScreen').classList.add('panel-open');
   fitStage();   // the step text column narrows to make room; re-fit its type
   panel.setAttribute('aria-hidden', 'false');
@@ -595,7 +598,7 @@ function renderVoicePill() {
     unsupported: ['off', 'mic_off', 'Voice off · use Chrome or Edge'],
     offline: ['off', 'wifi_off', 'Voice offline'],
   };
-  const [kind, icon, text] = map[s] || ['idle', 'mic', started ? 'Starting voice…' : 'Tap anywhere to turn on voice'];
+  const [kind, icon, text] = map[s] || ['idle', 'mic', `Say “${wakeWord()}” + command`];
   pill.dataset.state = kind;
   $('voiceIcon').textContent = icon;
   $('voiceText').textContent = text;
@@ -640,7 +643,7 @@ function renderSpeakControl() {
   const [icon, label] = { speaking: ['pause', 'Pause'], paused: ['play_arrow', 'Resume'] }[narrator.state] || ['volume_up', 'Repeat'];
   document.querySelectorAll('.speak-btn').forEach((btn) => {
     btn.querySelector('md-icon').textContent = icon;
-    btn.querySelector('.btn-label').textContent = label;
+    btn.querySelector('.btn-label').textContent = btn.dataset.long ? `${label} voice-over` : label;
     btn.classList.toggle('is-paused', narrator.state === 'paused');
     btn.setAttribute('aria-label', label === 'Repeat' ? 'Read it again' : `${label} the voice-over`);
   });
@@ -668,6 +671,7 @@ function applyDistance() {
   o.hidden = settings.distanceMode === 'auto';
   o.querySelector('span').textContent = `Test: ${settings.distanceMode} text`;
   renderDistanceStatus();
+  if (recipe) fitStage();   // buttons change height with distance, so re-fit the step text
 }
 function renderDistanceStatus() {
   const el = $('distanceStatus');
@@ -723,6 +727,7 @@ function bindUI() {
   $('backBtn').addEventListener('click', goBack);
   $('repeatBtn').addEventListener('click', onSpeakControl);
   $('prepPauseBtn').addEventListener('click', onSpeakControl);
+  $('voBtn').addEventListener('click', onSpeakControl);
   narrator.addEventListener('state', renderSpeakControl);
   $('timerBtn').addEventListener('click', () => ($('timerBtn').classList.contains('ringing') ? stopAlarm() : startTimer()));
   // Another step's timer: tap stops it if ringing, otherwise reads out how long is left.
@@ -885,7 +890,47 @@ async function boot() {
   app.classList.remove('booting');
   await document.fonts.ready;
   fitStage();
+  const shot = new URLSearchParams(location.search).get('shot');
+  if (shot) return setupShot(shot);
   if (state.screen === 'step') renderStep(0, { speakIt: false });   // resumed mid-recipe
+}
+
+// ---------- Screenshot mode (?shot=name) ----------
+// Puts the app straight into one exact state for the case-study slides. No mic, camera or sound.
+function setupShot(name) {
+  const p = new URLSearchParams(location.search);
+  document.documentElement.dataset.shot = name;   // turns off animations (see styles.css)
+  settings.distanceMode = p.get('dist') || 'close';
+  started = true;
+  voice.status = 'on';
+  const now = Date.now();
+  const timer = (stepNumber, nm, durSec, elapsedSec) => ({ id: `shot-${stepNumber}`, name: nm, stepNumber, startedAt: now - elapsedSec * 1000, durationMs: durSec * 1000 });
+  const goStep = (i) => {
+    state.screen = 'step'; state.stepIndex = i;
+    state.completed = recipe.steps.slice(0, i).map((s) => s.number);
+  };
+  state.timers = [];
+  if (name === 'recipes') state.screen = 'recipes';
+  else if (name.startsWith('intro-')) { state.screen = 'intro'; state.introIndex = ['voice', 'distance', 'alarm'].indexOf(name.slice(6)); }
+  else if (name === 'prep') state.screen = 'prep';
+  else if (name === 'done') { state.screen = 'done'; state.completed = recipe.steps.map((s) => s.number); }
+  else {
+    const m = name.match(/^step(\d)/);
+    goStep(m ? Number(m[1]) - 1 : 0);
+    if (name.includes('timers')) state.timers = [timer(3, 'Heat ghee', 60, 22), timer(5, 'Sauté onions', 360, 108)];
+    if (name.includes('alarm')) state.timers = [timer(5, 'Sauté onions', 360, 361)];
+  }
+  applyDistance();
+  $('overridePill').hidden = true;   // test indicator, not part of the design
+  showScreen();
+  if (state.screen === 'step') renderStep(0, { speakIt: false });
+  if (name.includes('panel')) openPanel();
+  lastAlarmKey = '';
+  tick();
+  alarm.stop();
+  renderVoicePill();
+  say([]);
+  document.documentElement.dataset.shot = name;
 }
 
 boot();

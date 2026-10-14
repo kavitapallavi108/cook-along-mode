@@ -1,13 +1,13 @@
 {
-  "categories": ["All", "Dal", "Sabzi", "Rice", "Breakfast", "Drinks"],
+  "categories": ["All", "Dal", "Curry", "Rice", "Snacks", "Breakfast"],
   "recipes": [
-    { "id": "dal-tadka", "title": "Dal tadka", "category": "Dal", "time": "40 min", "level": "Beginner", "rating": 4.8, "art": "final", "available": true },
-    { "id": "jeera-rice", "title": "Jeera rice", "category": "Rice", "time": "25 min", "level": "Beginner", "rating": 4.7, "art": "jeera", "available": false },
-    { "id": "aloo-sabzi", "title": "Aloo sabzi", "category": "Sabzi", "time": "30 min", "level": "Beginner", "rating": 4.6, "art": "aloo", "available": false },
-    { "id": "poha", "title": "Kanda poha", "category": "Breakfast", "time": "20 min", "level": "Beginner", "rating": 4.7, "art": "poha", "available": false },
-    { "id": "rajma", "title": "Rajma masala", "category": "Dal", "time": "50 min", "level": "Easy", "rating": 4.9, "art": "rajma", "available": false },
-    { "id": "palak-paneer", "title": "Palak paneer", "category": "Sabzi", "time": "35 min", "level": "Easy", "rating": 4.8, "art": "palak", "available": false },
-    { "id": "egg-bhurji", "title": "Egg bhurji", "category": "Breakfast", "time": "15 min", "level": "Beginner", "rating": 4.5, "art": "bhurji", "available": false },
-    { "id": "masala-chai", "title": "Masala chai", "category": "Drinks", "time": "10 min", "level": "Beginner", "rating": 4.9, "art": "chai", "available": false }
+    { "id": "dal-tadka", "title": "Dal tadka", "category": "Dal", "time": "40 min", "level": "Beginner", "rating": 4.8, "art": "final", "photo": "steps/10-final.jpg", "available": true },
+    { "id": "chhole-bhature", "title": "Chhole bhature", "category": "Curry", "time": "60 min", "level": "Medium", "rating": 4.8, "photo": "images/recipes/chole-bhature.jpg", "available": false },
+    { "id": "samose", "title": "Samose", "category": "Snacks", "time": "50 min", "level": "Medium", "rating": 4.7, "photo": "images/recipes/samosa.jpg", "available": false },
+    { "id": "butter-chicken", "title": "Butter chicken", "category": "Curry", "time": "50 min", "level": "Medium", "rating": 4.9, "photo": "images/recipes/butter-chicken.jpg", "available": false },
+    { "id": "masala-dosa", "title": "Masala dosa", "category": "Breakfast", "time": "40 min", "level": "Medium", "rating": 4.8, "photo": "images/recipes/masala-dosa.jpg", "available": false },
+    { "id": "paneer-tikka", "title": "Paneer tikka", "category": "Snacks", "time": "35 min", "level": "Easy", "rating": 4.7, "photo": "images/recipes/paneer-tikka.jpg", "available": false },
+    { "id": "biryani", "title": "Biryani", "category": "Rice", "time": "75 min", "level": "Medium", "rating": 4.9, "photo": "images/recipes/biryani.jpg", "available": false },
+    { "id": "palak-paneer", "title": "Palak paneer", "category": "Curry", "time": "35 min", "level": "Easy", "rating": 4.8, "photo": "images/recipes/palak-paneer.jpg", "available": false }
   ]
 }
