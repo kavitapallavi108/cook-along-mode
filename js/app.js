@@ -482,10 +482,8 @@ function renderPanel() {
   const rowsNow = groups.now.map((it) => row(it, () => `Now · Step ${it.step}`).replace('class="ing-item"', 'class="ing-item now"'));
   const rowsNext = groups.next.map((it) => row(it, () => `Step ${it.step}`));
   $('panelIngredients').innerHTML = ((rowsNow.length || rowsNext.length)
-    ? `<ul class="panel-list">${rowsNow.join('')}${rowsNext.join('')}</ul>` : '')
-    // Used items are done with, so they collapse to one compact line of tags.
-    + (groups.used.length ? `<div class="panel-used"><md-icon>check_circle</md-icon><span class="lbl">Used</span>${
-      groups.used.map((it) => `<span class="used-tag">${esc(it.ing.name)}</span>`).join('')}</div>` : '');
+    ? `<ul class="panel-list">${rowsNow.join('')}${rowsNext.join('')}</ul>` : '');
+  // Used items are not shown: the panel only lists what is still to be added.
   $('panelSub').textContent = `${recipe.title} · for ${recipe.servings} servings`;
   renderPanelTimers();
 }

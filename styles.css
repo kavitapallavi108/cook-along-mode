@@ -219,7 +219,16 @@ md-filled-tonal-button.target {
   background: var(--md-sys-color-surface-container-highest);
 }
 .mic-wrap md-icon { font-size: 30px; width: 30px; height: 30px; }
-.voice-pill[data-state="listening"] { background: var(--md-sys-color-primary-container); color: var(--md-sys-color-on-primary-container); }
+/* "Say Zara + command": soft turmeric gradient; deeper while listening */
+.voice-pill[data-state="idle"] {
+  background: linear-gradient(90deg, #FFF3D6 0%, #FFE3A6 55%, #FFD27A 100%);
+  color: #3A2600;
+}
+.voice-pill[data-state="idle"] .mic-wrap { background: rgba(255, 255, 255, 0.7); }
+.voice-pill[data-state="listening"] {
+  background: linear-gradient(90deg, #FFD98C 0%, #F7B93A 60%, #F0A30A 100%);
+  color: var(--md-sys-color-on-primary);
+}
 .voice-pill[data-state="listening"] .mic-wrap { background: var(--md-sys-color-primary); color: var(--md-sys-color-on-primary); }
 .voice-pill[data-state="listening"] .mic-wrap::after {
   content: ''; position: absolute; inset: 0; border-radius: 50%;
